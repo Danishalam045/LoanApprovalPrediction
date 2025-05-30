@@ -1,6 +1,7 @@
 # main.py
 
 # Import libraries
+import joblib # type: ignore
 import pandas as pd # type: ignore
 import numpy as np # type: ignore
 import matplotlib.pyplot as plt# type: ignore
@@ -75,3 +76,8 @@ for clf in models:
     print(f"\n{clf.__class__.__name__}:")
     print(f"Train Accuracy: {100 * metrics.accuracy_score(Y_train, Y_pred_train):.2f}%")
     print(f"Test Accuracy:  {100 * metrics.accuracy_score(Y_test, Y_pred_test):.2f}%")
+
+
+best_model = RandomForestClassifier(n_estimators=7, criterion='entropy', random_state=7)
+best_model.fit(X_train, Y_train)
+joblib.dump(best_model, 'model.pkl')

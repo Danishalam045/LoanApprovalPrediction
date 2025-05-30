@@ -1,0 +1,75 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Loan Approval Prediction</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h2>Loan Approval Prediction</h2>
+    <form action="/predict" method="post">
+      <label for="Gender">Gender:</label>
+      <select name="Gender">
+        <option value="1">Male</option>
+        <option value="0">Female</option>
+      </select>
+
+      <label for="Married">Married:</label>
+      <select name="Married">
+        <option value="1">Yes</option>
+        <option value="0">No</option>
+      </select>
+
+      <label for="Dependents">Dependents:</label>
+      <input type="number" name="Dependents" min="0" max="3" required>
+
+      <label for="Education">Education:</label>
+      <select name="Education">
+        <option value="1">Graduate</option>
+        <option value="0">Not Graduate</option>
+      </select>
+
+      <label for="Self_Employed">Self Employed:</label>
+      <select name="Self_Employed">
+        <option value="1">Yes</option>
+        <option value="0">No</option>
+      </select>
+
+      <label for="ApplicantIncome">Applicant Income:</label>
+      <input type="number" name="ApplicantIncome" required>
+
+      <label for="CoapplicantIncome">Coapplicant Income:</label>
+      <input type="number" name="CoapplicantIncome" required>
+
+      <label for="LoanAmount">Loan Amount:</label>
+      <input type="number" name="LoanAmount" required>
+
+      <label for="Loan_Amount_Term">Loan Term (in days):</label>
+      <input type="number" name="Loan_Amount_Term" required>
+
+      <label for="Credit_History">Credit History:</label>
+      <select name="Credit_History">
+        <option value="1">Good (1)</option>
+        <option value="0">Bad (0)</option>
+      </select>
+
+      <label for="Property_Area">Property Area:</label>
+      <select name="Property_Area">
+        <option value="0">Rural</option>
+        <option value="1">Semiurban</option>
+        <option value="2">Urban</option>
+      </select>
+
+      <button type="submit">Predict</button>
+    </form>
+    {% if prediction %}
+    <div class="result">
+      <h3>Prediction: {{ prediction }}</h3>
+    </div>
+    {% endif %}
+  </div>
+</body>
+</html>
