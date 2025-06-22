@@ -1,12 +1,10 @@
-# # app.py
 
 # from flask import Flask, render_template, request
 # import joblib
-# import numpy as np
+# import pandas as pd  # Add pandas import
 
 # app = Flask(__name__)
 
-# # Load the model
 # model = joblib.load('model.pkl')
 
 # @app.route('/')
@@ -16,7 +14,14 @@
 # @app.route('/predict', methods=['POST'])
 # def predict():
 #     try:
-#         # Get data from form
+#         # Define feature names exactly as in training
+#         feature_names = [
+#             'Gender', 'Married', 'Dependents', 'Education', 'Self_Employed',
+#             'ApplicantIncome', 'CoapplicantIncome', 'LoanAmount',
+#             'Loan_Amount_Term', 'Credit_History', 'Property_Area'
+#         ]
+
+#         # Extract features from form input
 #         features = [
 #             int(request.form['Gender']),
 #             int(request.form['Married']),
@@ -31,13 +36,15 @@
 #             int(request.form['Property_Area'])
 #         ]
 
-#         # Reshape and predict
-#         input_data = np.array(features).reshape(1, -1)
-#         prediction = model.predict(input_data)
+#         # Create a DataFrame with one row, passing column names
+#         input_df = pd.DataFrame([features], columns=feature_names)
 
-#         # Decode prediction
+#         # Predict using DataFrame to avoid warning
+#         prediction = model.predict(input_df)
+
 #         result = 'Approved' if prediction[0] == 1 else 'Not Approved'
 #         return render_template('index.html', prediction=result)
+
 #     except Exception as e:
 #         return f"Error: {e}"
 
@@ -45,10 +52,9 @@
 #     app.run(debug=True)
 
 
-
 from flask import Flask, render_template, request
 import joblib
-import pandas as pd  # Add pandas import
+import pandas as pd
 
 app = Flask(__name__)
 
@@ -61,14 +67,12 @@ def home():
 @app.route('/predict', methods=['POST'])
 def predict():
     try:
-        # Define feature names exactly as in training
         feature_names = [
             'Gender', 'Married', 'Dependents', 'Education', 'Self_Employed',
             'ApplicantIncome', 'CoapplicantIncome', 'LoanAmount',
             'Loan_Amount_Term', 'Credit_History', 'Property_Area'
         ]
 
-        # Extract features from form input
         features = [
             int(request.form['Gender']),
             int(request.form['Married']),
@@ -83,14 +87,11 @@ def predict():
             int(request.form['Property_Area'])
         ]
 
-        # Create a DataFrame with one row, passing column names
         input_df = pd.DataFrame([features], columns=feature_names)
-
-        # Predict using DataFrame to avoid warning
         prediction = model.predict(input_df)
-
         result = 'Approved' if prediction[0] == 1 else 'Not Approved'
-        return render_template('index.html', prediction=result)
+
+        return render_template('result.html', prediction=result)
 
     except Exception as e:
         return f"Error: {e}"
